@@ -6,10 +6,12 @@ function capitalizeFirstLetter(string) {
 
 const app = document.querySelector("#app");
 
-async function doSomething() {
+async function fetchPosts() {
   const response = await fetch("https://jsonplaceholder.typicode.com/posts");
-  const posts = await response.json();
-  console.log(posts);
+  return await response.json();
+}
+
+function renderPosts(posts) {
   app.innerHTML = `<section class="posts">
   <h1>Posts</h1></section>`;
   const postsSection = document.querySelector(".posts");
@@ -22,8 +24,13 @@ async function doSomething() {
     .join("");
 }
 
+async function loadPosts() {
+  const posts = await fetchPosts();
+  renderPosts(posts);
+}
+
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", doSomething);
+  document.addEventListener("DOMContentLoaded", loadPosts);
 } else {
-  doSomething();
+  loadPosts();
 }
